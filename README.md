@@ -8,7 +8,7 @@ Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Start
 Usage
 -----
 
-Example usage (if targeting swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a)
+Example usage (if targeting swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a):
 
 ```shell
 $ cf push
