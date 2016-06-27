@@ -3,17 +3,15 @@ Bluemix buildpack for Swift
 
 This is the Bluemix buildpack for Swift applications, powered by the Swift Package Manager (SPM). Though this buildpack was developed mainly for Bluemix, it can be used on any Cloud Foundry environment. This buildpack requires access to the Internet for downloading and installing several system level dependencies.
 
-Please note that this buildpack is **not** yet installed on Bluemix; our team is working on getting it installed soon. Having said that, you can still use this buildpack to deploy your Swift applications to Bluemix as described in the ```Usage``` section below.
-
-Also, check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Starter-Bluemix) for a fully working example of a Kitura-based server application that can be deployed to Bluemix (or any Cloud Foundry environment).
+Check out the [Kitura-Starter-Bluemix](https://github.com/IBM-Swift/Kitura-Starter-Bluemix) for a fully working example of a Kitura-based server application that can be deployed to Bluemix (or any Cloud Foundry environment).
 
 Usage
 -----
 
-Example usage:
+Example usage (if targeting swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a)
 
 ```shell
-$ cf push -b https://github.com/IBM-Swift/swift-buildpack.git
+$ cf push
 Using manifest file /Users/olivieri/git/Kitura-Starter-Bluemix/manifest.yml
 
 Creating app Kitura-Starter-Bluemix in org roliv@us.ibm.com / space dev as roliv@us.ibm.com...
@@ -79,8 +77,8 @@ Reading package lists...
 -----> Installing libcurl4-openssl-dev_7.35.0-1ubuntu2.6_amd64.deb
 -----> Installing libkqueue0_1.0.4-2ubuntu1_amd64.deb
 -----> Writing profile script...
------> Buildpack version 1.1.0
------> Installing Swift DEVELOPMENT-SNAPSHOT-2016-04-25-a
+-----> Buildpack version 1.1.2
+-----> Installing Swift DEVELOPMENT-SNAPSHOT-2016-05-03-a
        Downloaded Swift
 -----> Installing Clang 3.7.0
        Downloaded Clang
@@ -178,14 +176,20 @@ The latest version of Swift supported by this buildpack is ```swift-DEVELOPMENT-
 
 ### Specify a Swift version
 
-You can also customize the version of Swift used with a `.swift-version` file in your repository:
+The swift_buildpack installed on Bluemix supports the DEVELOPMENT-SNAPSHOT-2016-05-03-a version of the Swift binaries. If you'd like to use a different version of Swift on Bluemix for your application, you'll need to specify the version with a `.swift-version` file in the root of your repository:
 
 ```shell
 $ cat .swift-version
-swift-DEVELOPMENT-SNAPSHOT-2016-05-03-a
+swift-DEVELOPMENT-SNAPSHOT-2016-04-25-a
 ```
 
-For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version. Once you have tested and migrated your code to a newer version of Swift, you can then update the `.swift-version` file with the appropriate Swift version.
+In addition to including a `.swift-version` file, you'll also need to add the `-b https://github.com/IBM-Swift/swift-buildpack` parameter to the `cf push` command, as shown below:
+
+```shell
+cf push -b https://github.com/IBM-Swift/swift-buildpack
+```
+
+For a list of the Swift supported versions, check out the [manifest.yml](https://github.com/IBM-Swift/swift-buildpack/blob/bluemix-buildpack/manifest.yml) file. Since there are frequent Swift language changes, it's advised that you pin your application to a specific Swift version.
 
 ### System level libraries
 
@@ -224,15 +228,15 @@ Admin tasks
 
 To install this buildpack:
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.0/swift_buildpack-cached-v1.1.0.zip
-cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.0.zip <position>
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.2/swift_buildpack-cached-v1.1.2.zip
+cf create-buildpack swift_buildpack swift_buildpack-cached-v1.1.2.zip <position>
 ```
 
 And to update it:
 
 ```
-wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.0/swift_buildpack-cached-v1.1.0.zip
-cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.0.zip
+wget https://github.com/IBM-Swift/swift-buildpack/releases/download/v1.1.2/swift_buildpack-cached-v1.1.2.zip
+cf update-buildpack swift_buildpack -p swift_buildpack-cached-v1.1.2.zip
 ```
 
 For more details on installing buildpacks, see [Adding buildpacks to Cloud Foundry](https://docs.cloudfoundry.org/adminguide/buildpacks.html).
@@ -245,4 +249,5 @@ The buildpack zip file provided in each release is built using `manifest-cached.
 BUNDLE_GEMFILE=cf.Gemfile bundle install
 BUNDLE_GEMFILE=cf.Gemfile bundle exec buildpack-packager --cached --use-custom-manifest manifest-cached.yml
 ```
+
 For details on packaging buildpacks, see [buildpack-packager](https://github.com/cloudfoundry/buildpack-packager).
